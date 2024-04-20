@@ -1,0 +1,7 @@
+uvicorn
+gpt3_tokenizer
+pydantic
+fastapi
+openai
+python-dotenv
+firebase-admin

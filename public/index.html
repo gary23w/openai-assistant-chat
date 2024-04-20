@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <title>SamSimonAI v0.4 - Eavestrough and Aluminum Services</title>
+    <link rel="icon" href="images/favicon.ico" />
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="SammSimonAI v0.4" />
+    <meta
+      name="description"
+      content="Expert eavestrough and aluminum services in Toronto, Kitchener, and Waterloo. High-quality installations and repairs with a 100% satisfaction guarantee."
+    />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://chat.lfbuilders.ca/" />
+    <meta property="og:title" content="SammSimonAI v0.4" />
+    <meta
+      property="og:description"
+      content="Expert eavestrough and aluminum services in Toronto, Kitchener, and Waterloo. High-quality installations and repairs with a 100% satisfaction guarantee."
+    />
+    <meta property="og:image" content="/images/samm_dp.png" />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://chat.lfbuilders.ca/" />
+    <meta property="twitter:title" content="SammSimonAI v0.4" />
+    <meta
+      property="twitter:description"
+      content="Expert eavestrough and aluminum services in Toronto, Kitchener, and Waterloo. High-quality installations and repairs with a 100% satisfaction guarantee."
+    />
+    <meta property="twitter:image" content="/images/samm_dp.png" />
+    <link rel="stylesheet" href="src/style.css" />
+    <!-- Meta Pixel Code -->
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = "2.0";
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        "script",
+        "https://connect.facebook.net/en_US/fbevents.js"
+      );
+      fbq("init", "your-pixel");
+      fbq("track", "PageView");
+    </script>
+    <noscript
+      ><img
+        height="1"
+        width="1"
+        style="display: none"
+        src="pixel-source.facebook.com"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+    <script>
+      fbq("track", "ViewContent");
+    </script>
+  </head>
+  <body>
+    <div id="chatConsentModal" class="modal">
+      <div class="modal-content">
+        <h4>Chat with Us</h4>
+        <p>Get your free quote.</p>
+      </div>
+      <div class="modal-footer">
+        <button id="agreeButton" class="button">Agree</button>
+        <button id="disagreeButton" class="button" onclick="closeModal()">
+          Cancel
+        </button>
+      </div>
+    </div>
+
+    <div id="chat-container">
+      <div class="nav-bar">
+        <nav role="navigation">
+          <div id="menuToggle">
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+              <a href="https://lfbuilders.ca"><li>Home</li></a>
+              <a href="https://gallery.lfbuilders.ca"><li>Gallery</li></a>
+              <a href="https://blog.lfbuilders.ca"><li>Blog</li></a>
+              <a href="https://tiktok.com/@sammsimon1968"><li>Tiktok</li></a>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div id="chat-history"></div>
+      <div class="chat-box">
+        <input type="text" id="user-input" placeholder="Here to help..." />
+        <button id="send-button">Send</button>
+      </div>
+      <div class="footer-div">
+        <div class="copyright">
+          <p class="large-mono-p">
+            <a href="https://lfbuilders.ca/privacy.html">Privacy Policy</a>
+          </p>
+          <p class="small-p">
+            &copy; 2024 <a href="https://garrettstimpson.ca">GARY23W</a> MIT.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="src/script.js"></script>
+  </body>
+</html>
