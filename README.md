@@ -33,11 +33,11 @@ Inside the persona folder, you will find a samm-simon.txt file. Feel free to use
 
 ## Configuration
 
-First, prepare your Firebase project(Firestore Database) and download the configuration file to your project directory.
+First, prepare your Firebase project(Firestore Database) and download the configuration file to your project directory. Rename the file 'firebase.json'.
 
 Next, create an OpenAI account and generate an API key.
 
-Finally, goto https://platform.openai.com/docs/guides/creating-an-assistant and create an assistant. Note the assistant ID and name.(Set the persona/instruction to the one you created in the persona folder)
+Finally, goto https://platform.openai.com/docs/guides/creating-an-assistant and create the assistant. Note the assistant ID and name.(Set the persona/instruction to the one you created in the persona folder)
 
 ### Environment Setup
 
