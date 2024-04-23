@@ -26,10 +26,10 @@ def configure_router(api_key: str = None, assistant_name: str = None, assistant_
     This function allows for overriding the default environment variable settings.
     """
     global API_KEY, ASSISTANT_NAME, ASSISTANT_ID, FIREBASE_ID
-    API_KEY = api_key or API_KEY
-    ASSISTANT_NAME = assistant_name or ASSISTANT_NAME
-    ASSISTANT_ID = assistant_id or ASSISTANT_ID
-    FIREBASE_ID = firebase_id or FIREBASE_ID
+    API_KEY = api_key 
+    ASSISTANT_NAME = assistant_name 
+    ASSISTANT_ID = assistant_id 
+    FIREBASE_ID = firebase_id 
 
 @router.post("/chat")
 async def chat(chat_request: ChatRequest):
@@ -49,9 +49,6 @@ async def chat(chat_request: ChatRequest):
     thread_manager = ThreadManager(openai_async_client)
     assistant_manager = AssistantManager(openai_async_client)
     data_manager = DataManager(API_KEY, FIREBASE_ID)
-
-    # Log the incoming request
-    print(f"Received chat request from {chat_request.user_ip}.")
 
     # Process and store data received in the request
     await data_manager.parse_and_store_data(chat_request.user_ip, chat_request.message)

@@ -34,18 +34,18 @@ class DataManager:
         self.cache = {}
         self.client = OpenAI(api_key=api_key)
         self.firebase_id = firebase_id
-        self.db = self._initialize_firebase()
+        self.firestoreClient = self._initialize_firebase()
 
     def _initialize_firebase(self):
         """
         Initializes the Firebase application and returns the Firestore client.
+        If Firebase app is already initialized, it reuses the existing app.
         Returns:
             Firestore client for interacting with the database.
         """
-        cred = credentials.Certificate("firebase.json")
-        firebase_admin.initialize_app(cred, {
-            'projectId': self.firebase_id,
-        })
+        if not firebase_admin._apps:
+            cred = credentials.Certificate("firebase.json")
+            firebase_admin.initialize_app(cred, {'projectId': self.firebase_id})
         return firestore.client()
 
     async def parse_and_store_data(self, ip_address: str, prompt: str):
@@ -93,7 +93,8 @@ class DataManager:
             ip_address (str): The IP address of the user.
             prompt (str): The prompt to add to the list.
         """
-        doc_ref = self.db.collection('chatlogs').document(ip_address)
+        db = firestore.client()
+        doc_ref = db.collection('chatlogs').document(ip_address)
         doc_ref.set({
             'prompt_list': firestore.ArrayUnion([prompt])
         }, merge=True)
@@ -107,6 +108,7 @@ class DataManager:
             phone_number (str, optional): The customer's phone number.
             email (str, optional): The customer's email address.
         """
-        doc_ref = self.db.collection('chatlogs').document(ip_address)
+        db = firestore.client()
+        doc_ref = db.collection('chatlogs').document(ip_address)
         data = {k: v for k, v in {'name': name, 'phone_number': phone_number, 'email': email}.items() if v}
         doc_ref.set(data, merge=True)
