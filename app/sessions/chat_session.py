@@ -4,6 +4,16 @@ from app.managers.assistant_manager import AssistantManager
 
 
 class ChatSession:
+    """
+    A class to represent a chat session with an assistant.
+    Attributes:
+    thread_manager (ThreadManager): The thread manager object.
+    assistant_manager (AssistantManager): The assistant manager object.
+    assistant_name (str): The name of the assistant.
+    model_name (str): The model name of the assistant.
+    assistant_id (str): The assistant ID.
+    thread_id (str): The thread ID.
+    """
     def __init__(self, thread_manager: ThreadManager, assistant_manager: AssistantManager, assistant_name: str,
                  model_name: str, assistant_id: str = None, thread_id: str = None):
         self.thread_manager = thread_manager

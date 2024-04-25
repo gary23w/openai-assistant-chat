@@ -51,16 +51,3 @@ class ThreadManager:
     def count_tokens(text: str):
         # Placeholder for the actual token counting logic
         return gpt3_tokenizer.count_tokens(text)
-
-    # @staticmethod
-    # def read_thread_data(filename: str = 'data.json'):
-    #     if os.path.exists(filename):
-    #         with open(filename, 'r') as file:
-    #             return json.load(file)
-    #     return {}
-
-    # @staticmethod
-    # def save_thread_data(thread_id: str, filename: str = 'data.json'):
-    #     data = {'thread_id': thread_id}
-    #     with open(filename, 'w') as file:
-    #         json.dump(data, file)

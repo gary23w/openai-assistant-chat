@@ -48,6 +48,17 @@ class DataManager:
             firebase_admin.initialize_app(cred, {'projectId': self.firebase_id})
         return firestore.client()
 
+    def replace_false_with_none(self, data):
+        """
+        Replaces 'FALSE' values with None in the data dictionary.
+        Args:
+            data (dict): The dictionary containing values to replace.
+        Returns:
+            dict: The updated dictionary with 'FALSE' values replaced by None.
+        """
+        return {key: (None if value == "FALSE" else value) for key, value in data.items()}
+
+
     async def parse_and_store_data(self, ip_address: str, prompt: str):
         """
         Parses the prompt using OpenAI and stores the extracted data in Firestore.
@@ -76,15 +87,19 @@ class DataManager:
                 content = content.replace("[", "{").replace("]", "}")
                 content_dict = ast.literal_eval(content)
 
-            name = content_dict.get('name', None)
-            phone_number = content_dict.get('phone', None)
-            email = content_dict.get('email', None)
+            content_dict = {
+                'name': content_dict.get('name', None),
+                'phone': content_dict.get('phone', None),
+                'email': content_dict.get('email', None)
+            }
+            content_dict = self.replace_false_with_none(content_dict)
+            print(content_dict)
             self._update_prompt_list(ip_address, prompt)
 
         except Exception as e:
             print(f"Error while calling GPT-3 API: {e}")
 
-        self.store_customer_data(ip_address, name, phone_number, email)
+        self.store_customer_data(ip_address, content_dict['name'], content_dict['phone'], content_dict['email'])
 
     def _update_prompt_list(self, ip_address, prompt: str):
         """
@@ -94,7 +109,7 @@ class DataManager:
             prompt (str): The prompt to add to the list.
         """
         db = firestore.client()
-        doc_ref = db.collection('chatlogs').document(ip_address)
+        doc_ref = db.collection('chatlogs3').document(ip_address)
         doc_ref.set({
             'prompt_list': firestore.ArrayUnion([prompt])
         }, merge=True)
@@ -109,6 +124,6 @@ class DataManager:
             email (str, optional): The customer's email address.
         """
         db = firestore.client()
-        doc_ref = db.collection('chatlogs').document(ip_address)
+        doc_ref = db.collection('chatlogs3').document(ip_address)
         data = {k: v for k, v in {'name': name, 'phone_number': phone_number, 'email': email}.items() if v}
         doc_ref.set(data, merge=True)

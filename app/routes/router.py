@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 import os
 
+from app.sessions.user_session import RateLimiter
 from app.sessions.chat_session import ChatSession
 from app.sessions.data_session import DataManager
 from app.managers.thread_manager import ThreadManager
@@ -9,6 +10,8 @@ from app.managers.assistant_manager import AssistantManager
 from openai import AsyncOpenAI
 
 router = APIRouter()
+
+rate_limiter = RateLimiter()
 
 class ChatRequest(BaseModel):
     user_ip: str
@@ -44,11 +47,19 @@ async def chat(chat_request: ChatRequest):
     if not chat_request.user_ip:
         raise HTTPException(status_code=400, detail="User IP address is required.")
 
+    # Check if the user is allowed to make a request
+    if not await rate_limiter.is_allowed(chat_request.user_ip):
+        raise HTTPException(status_code=429, detail="Too many requests. Please try again later.")
+
     # Initialize API client and managers using global settings
     openai_async_client = AsyncOpenAI(api_key=API_KEY)
     thread_manager = ThreadManager(openai_async_client)
     assistant_manager = AssistantManager(openai_async_client)
     data_manager = DataManager(API_KEY, FIREBASE_ID)
+
+    # Check if the string size is within the limits of 120 characters
+    if len(chat_request.message) > 200:
+        return {"assistant_response": "Please keep your message under 200 characters.", "current_rate": rate_limiter.requests[chat_request.user_ip]}
 
     # Process and store data received in the request
     await data_manager.parse_and_store_data(chat_request.user_ip, chat_request.message)
@@ -60,6 +71,6 @@ async def chat(chat_request: ChatRequest):
     # Retrieve the latest response from the chat session
     response = await session.get_latest_response(chat_request.message, thread_id)
     if response:
-        return {"assistant_response": response, "thread_id": thread_id}
+        return {"assistant_response": response, "thread_id": thread_id, "current_rate": rate_limiter.requests[chat_request.user_ip]}
     else:
         raise HTTPException(status_code=503, detail="Our chat system is currently unavailable. Please try again later.")
